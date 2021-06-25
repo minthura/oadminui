@@ -15,7 +15,6 @@ class UserController extends GetxController {
     _isLoading.value = true;
     final dio = Dio();
     try {
-      await Future.delayed(Duration(seconds: 2));
       var response = await dio.get(
           'https://60c9c2cb772a760017204576.mockapi.io/users?page=$page&limit=$limit');
       var data = response.data;

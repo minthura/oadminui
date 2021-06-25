@@ -4,13 +4,25 @@ class User extends JsonConvertable {
   final String userID;
   final String name;
   final String role;
-  User({required this.userID, required this.name, required this.role});
+  final String avatar;
+  final String email;
+  final String gender;
+  User(
+      {required this.avatar,
+      required this.email,
+      required this.gender,
+      required this.userID,
+      required this.name,
+      required this.role});
 
   static User fromJson(dynamic json) {
     return User(
-      userID: json['userID'] == null ? 'x' : json['userID'],
-      name: json['name'] == null ? "Unknown" : json['name'],
-      role: json['role'] == null ? "Unknown" : json['role'],
+      userID: json['userID'] == null ? "" : json['userID'],
+      name: json['name'] == null ? "" : json['name'],
+      role: json['role'] == null ? "" : json['role'],
+      avatar: json['avatar'] == null ? "" : json['avatar'],
+      email: json['email'] == null ? "" : json['email'],
+      gender: json['gender'] == null ? "" : json['gender'],
     );
   }
 
@@ -20,6 +32,9 @@ class User extends JsonConvertable {
       "name": name,
       "role": role,
       "userID": userID,
+      "avatar": avatar,
+      "email": email,
+      "gender": gender,
     };
   }
 }

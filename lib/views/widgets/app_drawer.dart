@@ -50,44 +50,47 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Row(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                const UserAccountsDrawerHeader(
-                  accountName: Text('User'),
-                  accountEmail: Text('user@email.com'),
-                  currentAccountPicture: CircleAvatar(
-                    child: Icon(Icons.android),
+    return SizedBox(
+      width: 300,
+      child: Drawer(
+        child: Row(
+          children: [
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  const UserAccountsDrawerHeader(
+                    accountName: Text('User'),
+                    accountEmail: Text('user@email.com'),
+                    currentAccountPicture: CircleAvatar(
+                      child: Icon(Icons.android),
+                    ),
                   ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.home),
-                  title: const Text('Home'),
-                  onTap: () async {
-                    await _navigateTo(context, HomeScreen.route);
-                  },
-                  selected: _selectedRoute == HomeScreen.route,
-                ),
-                ListTile(
-                  leading: const Icon(Icons.photo_library),
-                  title: const Text('Users'),
-                  onTap: () async {
-                    await _navigateTo(context, UsersScreen.route);
-                  },
-                  selected: _selectedRoute == UsersScreen.route,
-                ),
-              ],
+                  ListTile(
+                    leading: const Icon(Icons.home),
+                    title: const Text('Home'),
+                    onTap: () async {
+                      await _navigateTo(context, HomeScreen.route);
+                    },
+                    selected: _selectedRoute == HomeScreen.route,
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Users'),
+                    onTap: () async {
+                      await _navigateTo(context, UsersScreen.route);
+                    },
+                    selected: _selectedRoute == UsersScreen.route,
+                  ),
+                ],
+              ),
             ),
-          ),
-          if (widget.permanentlyDisplay)
-            const VerticalDivider(
-              width: 1,
-            )
-        ],
+            if (widget.permanentlyDisplay)
+              const VerticalDivider(
+                width: 1,
+              )
+          ],
+        ),
       ),
     );
   }
