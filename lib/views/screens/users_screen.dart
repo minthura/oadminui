@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oadminui/controllers/user_controller.dart';
 import 'package:oadminui/views/widgets/app_scaffold.dart';
-import 'package:oadminui/views/widgets/my_paginated_table.dart';
+import 'package:oadminui/views/widgets/my_paginated_table_v2.dart';
 
 class UsersScreen extends StatelessWidget {
   static const route = '/users';
   const UsersScreen({Key? key}) : super(key: key);
-  final limit = 10;
+  final limit = 5;
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -20,13 +20,51 @@ class UsersScreen extends StatelessWidget {
         builder: (userController) => Stack(
           alignment: Alignment.center,
           children: [
-            MyPaginatedDataTable(
-              headers: ['Name', 'Role', 'Email', 'Gender'],
+            MyPaginatedDataTableV2(
+              headers: [
+                'Name',
+                'Role',
+                'Email',
+                'Gender',
+                'Role',
+                'Email',
+                'Gender',
+                'Name',
+                'Role',
+                'Email',
+                'Gender',
+                'Role',
+                'Email',
+                'Gender',
+                'Name',
+                'Role',
+                'Email',
+                'Gender',
+              ],
               rowsPerPage: limit,
               totalRows: 30,
               onPageChange: (p) => userController.getUsers(p, limit),
               rows: userController.users,
-              props: ['name', 'role', 'email', 'gender'],
+              props: [
+                'name',
+                'role',
+                'email',
+                'gender',
+                'role',
+                'email',
+                'gender',
+                'name',
+                'role',
+                'email',
+                'gender',
+                'role',
+                'email',
+                'gender',
+                'name',
+                'role',
+                'email',
+                'gender',
+              ],
               hasActions: true,
               onActionDetail: (i) => print(userController.users[i].name),
               onActionEdit: (i) => print(userController.users[i].name),

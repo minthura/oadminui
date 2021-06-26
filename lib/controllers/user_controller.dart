@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:oadminui/models/user.dart';
 
@@ -13,6 +12,7 @@ class UserController extends GetxController {
 
   Future<List<User>> getUsers(int page, int limit) async {
     _isLoading.value = true;
+    EasyLoading.show(status: 'Loading');
     final dio = Dio();
     try {
       var response = await dio.get(
@@ -21,11 +21,13 @@ class UserController extends GetxController {
       var _users = List<User>.from(data.map((x) => User.fromJson(x)));
       users(_users);
       _isLoading.value = false;
+      EasyLoading.dismiss();
       return _users;
     } catch (e) {
       print(e);
       _isLoading.value = false;
     }
+    EasyLoading.dismiss();
     return [];
   }
 
