@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oadminui/controllers/user_controller.dart';
+import 'package:oadminui/views/screens/user/create_screen.dart';
 import 'package:oadminui/views/widgets/app_scaffold.dart';
 import 'package:oadminui/views/widgets/my_paginated_table_v2.dart';
 
@@ -13,7 +14,13 @@ class UsersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       pageTitle: 'Users',
-      actions: [IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.add))],
+      actions: [
+        IconButton(
+            onPressed: () {
+              Get.toNamed(NewUserScreen.route);
+            },
+            icon: Icon(CupertinoIcons.add))
+      ],
       body: GetX<UserController>(
         init: UserController(limit: limit),
         global: false,

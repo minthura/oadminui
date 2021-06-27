@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oadminui/constants.dart';
+import 'package:oadminui/routes.dart';
 import 'package:oadminui/views/screens/home_screen.dart';
-import 'package:oadminui/views/screens/users_screen.dart';
+import 'package:oadminui/views/screens/user/index_screen.dart';
 
 import '../../app_route_observer.dart';
 
@@ -18,7 +20,7 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> with RouteAware {
-  String _selectedRoute = '/';
+  static String _selectedRoute = '/';
   AppRouteObserver? _routeObserver;
   @override
   void initState() {
@@ -105,8 +107,10 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
   }
 
   void _updateSelectedRoute() {
-    setState(() {
-      _selectedRoute = Get.currentRoute;
-    });
+    if (navMenuRoutes.contains(Get.currentRoute)) {
+      setState(() {
+        _selectedRoute = Get.currentRoute;
+      });
+    }
   }
 }

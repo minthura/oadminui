@@ -5,8 +5,11 @@ import 'constants.dart';
 ThemeData theme() {
   return ThemeData(
     primaryColor: kPrimaryColor,
+    primaryColorDark: kPrimaryDarkColor,
     accentColor: kAccentColor,
+    focusColor: kAccentColor,
     textTheme: textTheme(),
+    inputDecorationTheme: inputDecorationTheme(),
     buttonColor: kButtonColor,
     scaffoldBackgroundColor: kScaffoldBackgroundColor,
     fontFamily: GoogleFonts.notoSans().fontFamily,
@@ -23,6 +26,43 @@ ThemeData theme() {
               key: (dynamic k) => k,
               value: (dynamic _) => const _InanimatePageTransitionsBuilder()),
     ),
+  );
+}
+
+InputDecorationTheme inputDecorationTheme() {
+  return InputDecorationTheme(
+    contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: kAccentColor.withAlpha(128),
+        width: 1,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: kAccentColor,
+        width: 1,
+      ),
+    ),
+    border: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: kAccentColor,
+        width: 1,
+      ),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: kErrorColor,
+        width: 1,
+      ),
+    ),
+    // border: OutlineInputBorder(
+    //   borderRadius: BorderRadius.circular(16),
+    //   borderSide: BorderSide(
+    //     color: kAccentColor,
+    //     width: 1,
+    //   ),
+    // ),
   );
 }
 
