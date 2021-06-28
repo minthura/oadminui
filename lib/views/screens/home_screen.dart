@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:oadminui/views/screens/user/index_screen.dart';
 import 'package:oadminui/views/widgets/app_scaffold.dart';
 
 class HomeScreen extends StatelessWidget {

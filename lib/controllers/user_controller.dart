@@ -1,37 +1,48 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:oadminui/models/user.dart';
+import 'package:oadminui/providers/user_provider.dart';
 
-class UserController extends GetxController {
+import 'base_controller.dart';
+
+class UserController extends BaseGetxController {
   final RxList<User> users = <User>[].obs;
-  final _isLoading = false.obs;
+  final totalUsers = 0.obs;
+  final _isBusy = false.obs;
   final int limit;
 
-  UserController({required this.limit});
+  UserController({this.limit = 10});
 
-  Future<List<User>> getUsers(int page, int limit) async {
-    _isLoading.value = true;
+  void getUsers(int page, int limit) {
+    _isBusy.value = true;
     EasyLoading.show(status: 'Loading');
-    final dio = Dio();
-    try {
-      var response = await dio.get(
-          'https://60c9c2cb772a760017204576.mockapi.io/users?page=$page&limit=$limit');
-      var data = response.data;
-      var _users = List<User>.from(data.map((x) => User.fromJson(x)));
-      users(_users);
-      _isLoading.value = false;
+    UserProvider.instance.getUsers(page, limit, (data, count) {
+      users(data);
+      totalUsers(count);
       EasyLoading.dismiss();
-      return _users;
-    } catch (e) {
-      print(e);
-      _isLoading.value = false;
-    }
-    EasyLoading.dismiss();
-    return [];
+      _isBusy.value = false;
+    }, (error) {
+      handleCommonError(error);
+      EasyLoading.dismiss();
+      _isBusy.value = false;
+    });
   }
 
-  bool get isLoading => _isLoading.value;
+  void createUser(User user, Function(User) onSuccess) {
+    _isBusy.value = true;
+    EasyLoading.show(status: 'Loading');
+    UserProvider.instance.createUser(user, (response) {
+      EasyLoading.dismiss();
+      _isBusy.value = false;
+      onSuccess(response);
+    }, (error) {
+      handleCommonError(error);
+      EasyLoading.dismiss();
+      _isBusy.value = false;
+    });
+  }
+
+  bool get isBusy => _isBusy.value;
 
   @override
   void onInit() {

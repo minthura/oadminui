@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final kPrimaryColor = Color(0xff4CAF50);
+final kPrimaryColor = Colors.green;
 final kPrimaryDarkColor = Color(0xff388E3C);
 final kAccentColor = Color(0xff009688);
 final kErrorColor = Colors.red;

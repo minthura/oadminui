@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:oadminui/services/json_convertable.dart';
-import 'package:oadminui/views/widgets/loading_indicator.dart';
 
 class MyPaginatedDataTableV2 extends StatefulWidget {
   const MyPaginatedDataTableV2({
@@ -148,12 +146,23 @@ class _MyPaginatedDataTableV2State extends State<MyPaginatedDataTableV2> {
                 ),
               ),
             ),
+            widget.rows.length == 0
+                ? Container(
+                    color: Colors.grey.shade200,
+                    padding: EdgeInsets.all(16),
+                    child: Center(
+                      child: Text('No Data'),
+                    ),
+                  )
+                : Container(),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
                   IconButton(
-                      onPressed: (currentPage == 1 || widget.isBusy)
+                      onPressed: (widget.rows.length == 0 ||
+                              currentPage == 1 ||
+                              widget.isBusy)
                           ? null
                           : () async {
                               if (widget.onPageChange != null)
@@ -165,7 +174,9 @@ class _MyPaginatedDataTableV2State extends State<MyPaginatedDataTableV2> {
                       icon: Icon(CupertinoIcons.left_chevron)),
                   Text('Page $currentPage of $totalPages'),
                   IconButton(
-                      onPressed: (currentPage == totalPages || widget.isBusy)
+                      onPressed: (widget.rows.length == 0 ||
+                              currentPage == totalPages ||
+                              widget.isBusy)
                           ? null
                           : () async {
                               if (widget.onPageChange != null)
