@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:oadminui/models/user.dart';
 import 'package:oadminui/providers/user_provider.dart';
 
-import 'base_controller.dart';
+import '../base_controller.dart';
 
-class UserController extends BaseGetxController {
+class UserIndexController extends BaseGetxController {
   final RxList<User> users = <User>[].obs;
   final totalUsers = 0.obs;
   final _isBusy = false.obs;
   final int limit;
 
-  UserController({this.limit = 10});
+  UserIndexController({this.limit = 10});
 
   void getUsers(int page, int limit) {
     _isBusy.value = true;
@@ -28,17 +28,15 @@ class UserController extends BaseGetxController {
     });
   }
 
-  void createUser(User user, Function(User) onSuccess) {
-    _isBusy.value = true;
-    EasyLoading.show(status: 'Loading');
-    UserProvider.instance.createUser(user, (response) {
+  void deleteUser(String id) {
+    EasyLoading.show(status: 'Deleting');
+    UserProvider.instance.deleteUser(id, () {
+      users.removeWhere((user) => user.id == id);
+      totalUsers.value = totalUsers.value - 1;
       EasyLoading.dismiss();
-      _isBusy.value = false;
-      onSuccess(response);
     }, (error) {
       handleCommonError(error);
       EasyLoading.dismiss();
-      _isBusy.value = false;
     });
   }
 

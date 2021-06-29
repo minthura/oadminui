@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oadminui/controllers/user/create_controller.dart';
+import 'package:oadminui/controllers/user/update_controller.dart';
+import 'package:oadminui/models/user.dart';
 import 'package:oadminui/views/widgets/app_scaffold.dart';
 import 'package:oadminui/views/widgets/my_datepicker.dart';
 import 'package:oadminui/views/widgets/oad_box_container.dart';
@@ -8,17 +9,39 @@ import 'package:oadminui/views/widgets/oad_button.dart';
 import 'package:oadminui/views/widgets/oad_checkbox.dart';
 import 'package:oadminui/views/widgets/oad_radio_group.dart';
 
-class NewUserScreen extends StatelessWidget {
-  static const route = '/new-user';
-  const NewUserScreen({Key? key}) : super(key: key);
+class UpdateUserScreen extends StatefulWidget {
+  static const route = '/update-user';
+  const UpdateUserScreen({Key? key}) : super(key: key);
+
+  @override
+  _UpdateUserScreenState createState() => _UpdateUserScreenState();
+}
+
+class _UpdateUserScreenState extends State<UpdateUserScreen> {
+  final nameTextEditingController = TextEditingController();
+  final emailTextEditingController = TextEditingController();
+  final passwordTextEditingController = TextEditingController();
+  final confirmTextEditingController = TextEditingController();
+  final addressTextEditingController = TextEditingController();
+  final dobTextEditingController = TextEditingController();
+  User user = Get.arguments;
+  @override
+  void initState() {
+    nameTextEditingController.text = user.name;
+    emailTextEditingController.text = user.email;
+    passwordTextEditingController.text = user.password;
+    confirmTextEditingController.text = user.password;
+    addressTextEditingController.text = user.address;
+    dobTextEditingController.text = user.dobStr;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // UserController userController = Get.put(UserController(), permanent: false);
     return AppScaffold(
-      pageTitle: 'New User',
-      body: GetX<UserCreateController>(
-        init: UserCreateController(),
+      pageTitle: 'Update User',
+      body: GetX<UserUpdateController>(
+        init: UserUpdateController(user.obs),
         global: false,
         builder: (controller) => SingleChildScrollView(
           child: Container(
@@ -27,6 +50,7 @@ class NewUserScreen extends StatelessWidget {
               children: [
                 TextField(
                   onChanged: controller.onNameChanged,
+                  controller: nameTextEditingController,
                   decoration: InputDecoration(
                     labelText: 'Full name',
                     errorText: controller.onNameError(),
@@ -37,6 +61,7 @@ class NewUserScreen extends StatelessWidget {
                 ),
                 TextField(
                   onChanged: controller.onEmailChanged,
+                  controller: emailTextEditingController,
                   decoration: InputDecoration(
                     labelText: 'Email',
                     errorText: controller.onEmailError(),
@@ -47,6 +72,7 @@ class NewUserScreen extends StatelessWidget {
                 ),
                 TextField(
                   onChanged: controller.onPasswordChanged,
+                  controller: passwordTextEditingController,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     errorText: controller.onPasswordError(),
@@ -57,6 +83,7 @@ class NewUserScreen extends StatelessWidget {
                 ),
                 TextField(
                   onChanged: controller.onConfirmPasswordChanged,
+                  controller: confirmTextEditingController,
                   decoration: InputDecoration(
                     labelText: 'Confirm password',
                     errorText: controller.onConfirmPasswordError(),
@@ -66,6 +93,7 @@ class NewUserScreen extends StatelessWidget {
                   height: 16,
                 ),
                 TextField(
+                  controller: addressTextEditingController,
                   onChanged: controller.onAddressChanged,
                   maxLines: 5,
                   decoration: InputDecoration(
@@ -78,6 +106,7 @@ class NewUserScreen extends StatelessWidget {
                 ),
                 MyDatePicker(
                   labelText: 'Date of birth',
+                  text: dobTextEditingController.text,
                   onDateSelected: (date) => controller.onDobChanged(date),
                   errorText: controller.onDobError(),
                 ),
@@ -88,6 +117,7 @@ class NewUserScreen extends StatelessWidget {
                   label: 'Gender',
                   child: RadioGroup(
                     values: ['Male', 'Female'],
+                    selectedValue: controller.user.value.gender,
                     onChanged: (index, value) =>
                         controller.onGenderChanged(index),
                   ),
@@ -101,18 +131,22 @@ class NewUserScreen extends StatelessWidget {
                       OADCheckbox(
                         label: 'READ',
                         onChanged: controller.canRead,
+                        isChecked: controller.canRead.value,
                       ),
                       OADCheckbox(
                         label: 'WRITE',
                         onChanged: controller.canWrite,
+                        isChecked: controller.canWrite.value,
                       ),
                       OADCheckbox(
                         label: 'UPDATE',
                         onChanged: controller.canUpdate,
+                        isChecked: controller.canUpdate.value,
                       ),
                       OADCheckbox(
                         label: 'DELETE',
                         onChanged: controller.canDelete,
+                        isChecked: controller.canDelete.value,
                       ),
                     ],
                   ),
@@ -136,10 +170,10 @@ class NewUserScreen extends StatelessWidget {
                       OADButton(
                         onPressed: controller.isFormValid.value
                             ? () {
-                                controller.createUser();
+                                controller.updateUser();
                               }
                             : null,
-                        title: 'CREATE',
+                        title: 'Update',
                       ),
                     ],
                   ),

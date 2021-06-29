@@ -51,96 +51,8 @@ class _MyPaginatedDataTableV2State extends State<MyPaginatedDataTableV2> {
                   child: ConstrainedBox(
                     constraints: BoxConstraints(minWidth: constraints.maxWidth),
                     child: DataTable(
-                      columns: widget.hasActions
-                          ? widget.headers
-                              .map(
-                              (h) => DataColumn(
-                                label: Text(
-                                  h,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            )
-                              .followedBy([
-                              DataColumn(
-                                  label: Text(
-                                'Actions',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ))
-                            ]).toList()
-                          : widget.headers
-                              .map(
-                                (h) => DataColumn(
-                                  label: Text(
-                                    h,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                      rows: widget.rows.asMap().entries.map(
-                        (entry) {
-                          final jconvertable = entry.value;
-                          final index = entry.key;
-                          final cells = widget.props.map((prop) {
-                            final json = jconvertable.toJson();
-                            final split = prop.split(':');
-                            final key = split[0];
-                            if (json.containsKey(key)) {
-                              final value = json[key];
-                              if (split.length > 1) {
-                                final type = split[1];
-                                if (type == 'image') {
-                                  return DataCell(
-                                    CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage: NetworkImage(value),
-                                    ),
-                                  );
-                                } else {
-                                  return DataCell(Text(value));
-                                }
-                              }
-                              return DataCell(Text(value));
-                            }
-                            return DataCell(
-                              Text(''),
-                            );
-                          }).toList();
-                          if (widget.hasActions) {
-                            final fcells = cells.followedBy([
-                              DataCell(Row(
-                                children: [
-                                  IconButton(
-                                    color: Colors.green,
-                                    onPressed: widget.onActionDetail != null
-                                        ? () => widget.onActionDetail!(index)
-                                        : null,
-                                    icon: Icon(CupertinoIcons.list_dash),
-                                  ),
-                                  IconButton(
-                                    color: Colors.orange,
-                                    onPressed: widget.onActionEdit != null
-                                        ? () => widget.onActionEdit!(index)
-                                        : null,
-                                    icon: Icon(CupertinoIcons.pencil),
-                                  ),
-                                  IconButton(
-                                    color: Colors.red,
-                                    onPressed: widget.onActionDelete != null
-                                        ? () => widget.onActionDelete!(index)
-                                        : null,
-                                    icon: Icon(CupertinoIcons.delete),
-                                  ),
-                                ],
-                              ))
-                            ]).toList();
-                            return DataRow(cells: fcells);
-                          }
-                          return DataRow(cells: cells);
-                        },
-                      ).toList(),
+                      columns: buildHeaders(),
+                      rows: buildRows(),
                     ),
                   ),
                 ),
@@ -160,31 +72,14 @@ class _MyPaginatedDataTableV2State extends State<MyPaginatedDataTableV2> {
               child: Row(
                 children: [
                   IconButton(
-                      onPressed: (widget.rows.length == 0 ||
-                              currentPage == 1 ||
-                              widget.isBusy)
-                          ? null
-                          : () async {
-                              if (widget.onPageChange != null)
-                                await widget.onPageChange!(currentPage - 1);
-                              setState(() {
-                                currentPage -= 1;
-                              });
-                            },
+                      onPressed:
+                          (!widget.isBusy && currentPage > 1) ? goPrev : null,
                       icon: Icon(CupertinoIcons.left_chevron)),
                   Text('Page $currentPage of $totalPages'),
                   IconButton(
-                      onPressed: (widget.rows.length == 0 ||
-                              currentPage == totalPages ||
-                              widget.isBusy)
-                          ? null
-                          : () async {
-                              if (widget.onPageChange != null)
-                                await widget.onPageChange!(currentPage + 1);
-                              setState(() {
-                                currentPage += 1;
-                              });
-                            },
+                      onPressed: (!widget.isBusy && currentPage < totalPages)
+                          ? goNext
+                          : null,
                       icon: Icon(CupertinoIcons.right_chevron)),
                 ],
               ),
@@ -193,5 +88,116 @@ class _MyPaginatedDataTableV2State extends State<MyPaginatedDataTableV2> {
         );
       },
     );
+  }
+
+  buildHeaders() {
+    return widget.hasActions
+        ? widget.headers
+            .map(
+            (h) => DataColumn(
+              label: Text(
+                h,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          )
+            .followedBy([
+            DataColumn(
+                label: Text(
+              'Actions',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ))
+          ]).toList()
+        : widget.headers
+            .map(
+              (h) => DataColumn(
+                label: Text(
+                  h,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+            .toList();
+  }
+
+  buildRows() {
+    return widget.rows.asMap().entries.map(
+      (entry) {
+        final jconvertable = entry.value;
+        final index = entry.key;
+        final cells = widget.props.map((prop) {
+          final json = jconvertable.toJson();
+          final split = prop.split(':');
+          final key = split[0];
+          if (json.containsKey(key)) {
+            final value = json[key];
+            if (split.length > 1) {
+              final type = split[1];
+              if (type == 'image') {
+                return DataCell(
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage: NetworkImage(value),
+                  ),
+                );
+              } else {
+                return DataCell(Text(value));
+              }
+            }
+            return DataCell(Text(value));
+          }
+          return DataCell(
+            Text(''),
+          );
+        }).toList();
+        if (widget.hasActions) {
+          final fcells = cells.followedBy([
+            DataCell(Row(
+              children: [
+                IconButton(
+                  color: Colors.green,
+                  onPressed: widget.onActionDetail != null
+                      ? () => widget.onActionDetail!(index)
+                      : null,
+                  icon: Icon(CupertinoIcons.list_dash),
+                ),
+                IconButton(
+                  color: Colors.orange,
+                  onPressed: widget.onActionEdit != null
+                      ? () => widget.onActionEdit!(index)
+                      : null,
+                  icon: Icon(CupertinoIcons.pencil),
+                ),
+                IconButton(
+                  color: Colors.red,
+                  onPressed: widget.onActionDelete != null
+                      ? () => widget.onActionDelete!(index)
+                      : null,
+                  icon: Icon(CupertinoIcons.delete),
+                ),
+              ],
+            ))
+          ]).toList();
+          return DataRow(cells: fcells);
+        }
+        return DataRow(cells: cells);
+      },
+    ).toList();
+  }
+
+  goPrev() async {
+    if (widget.onPageChange != null)
+      await widget.onPageChange!(currentPage - 1);
+    setState(() {
+      if (currentPage > 1) currentPage -= 1;
+    });
+  }
+
+  goNext() async {
+    if (widget.onPageChange != null)
+      await widget.onPageChange!(currentPage + 1);
+    setState(() {
+      currentPage += 1;
+    });
   }
 }

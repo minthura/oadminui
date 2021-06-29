@@ -24,4 +24,22 @@ class UserProvider {
       onError(e);
     });
   }
+
+  updateUser(
+      User user, Function(User user) onSuccess, Function(HttpError) onError) {
+    HttpClient.instance.put('users/${user.id}', user.toJson(), (response) {
+      var data = response.data;
+      onSuccess(User.fromJson(data));
+    }, (e) {
+      onError(e);
+    });
+  }
+
+  deleteUser(String id, Function() onSuccess, Function(HttpError) onError) {
+    HttpClient.instance.delete('users/$id', (response) {
+      onSuccess();
+    }, (e) {
+      onError(e);
+    });
+  }
 }

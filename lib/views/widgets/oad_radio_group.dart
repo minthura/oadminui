@@ -6,9 +6,11 @@ class RadioGroup extends StatefulWidget {
     required this.values,
     this.selectedIndex = 0,
     this.onChanged,
+    this.selectedValue = '',
   }) : super(key: key);
   final List<String> values;
   final int selectedIndex;
+  final String selectedValue;
   final Function(int index, String value)? onChanged;
 
   @override
@@ -20,6 +22,12 @@ class _RadioGroupState extends State<RadioGroup> {
   @override
   void initState() {
     _groupValue = widget.values[widget.selectedIndex];
+    if (widget.selectedValue.isNotEmpty) {
+      final index = widget.values.indexOf(widget.selectedValue);
+      if (index >= 0) {
+        _groupValue = widget.values[index];
+      }
+    }
     super.initState();
   }
 

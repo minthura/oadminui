@@ -12,7 +12,7 @@ import 'package:oadminui/views/screens/user/formz/name.dart';
 import 'package:oadminui/views/screens/user/formz/password.dart';
 import 'package:oadminui/views/screens/user/index_screen.dart';
 
-class UserValidationController extends BaseGetxController {
+class UserCreateController extends BaseGetxController {
   final Rx<Name> name = Name.pure().obs;
   final Rx<Email> email = Email.pure().obs;
   final Rx<Password> password = Password.pure().obs;
@@ -43,7 +43,6 @@ class UserValidationController extends BaseGetxController {
   }
 
   void onConfirmPasswordChanged(String value) {
-    print("p1: ${password.value.value}, c1: $value");
     confirmPassword.value.password = password.value.value;
     confirmPassword(ConfirmPassword.dirty(password.value.value, value));
     validate();
@@ -105,7 +104,7 @@ class UserValidationController extends BaseGetxController {
 
   void createUser() {
     if (validate()) {
-      EasyLoading.show(status: 'Creating...');
+      EasyLoading.show(status: 'Creating');
       final user = User(
         createdAt: DateTime.now(),
         name: name.value.value,
@@ -121,7 +120,7 @@ class UserValidationController extends BaseGetxController {
       );
       UserProvider.instance.createUser(user, (response) {
         EasyLoading.dismiss();
-        Get.toNamed(UsersScreen.route);
+        Get.offAndToNamed(UsersScreen.route);
       }, (error) {
         handleCommonError(error);
         EasyLoading.dismiss();

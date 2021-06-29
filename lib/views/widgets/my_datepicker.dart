@@ -4,17 +4,28 @@ import 'package:intl/intl.dart';
 
 class MyDatePicker extends StatefulWidget {
   const MyDatePicker(
-      {Key? key, this.labelText, this.errorText, this.onDateSelected})
+      {Key? key,
+      this.labelText,
+      this.errorText,
+      this.onDateSelected,
+      this.text})
       : super(key: key);
   final String? labelText;
   final String? errorText;
   final Function(DateTime)? onDateSelected;
+  final String? text;
   @override
   _MyDatePickerState createState() => _MyDatePickerState();
 }
 
 class _MyDatePickerState extends State<MyDatePicker> {
   TextEditingController _textEditingController = TextEditingController();
+  @override
+  void initState() {
+    _textEditingController.text = widget.text ?? '';
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextField(

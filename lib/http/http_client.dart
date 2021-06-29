@@ -75,4 +75,24 @@ class HttpClient {
       _baseService.handleError(e, error);
     }
   }
+
+  Future<void> put(String url, dynamic json,
+      Function(Response<dynamic>) success, Function(HttpError) error) async {
+    try {
+      final Response resp = await _dio.put(url, data: json);
+      success(resp);
+    } catch (e) {
+      _baseService.handleError(e, error);
+    }
+  }
+
+  Future<void> delete(String url, Function(Response<dynamic>) success,
+      Function(HttpError) error) async {
+    try {
+      final Response resp = await _dio.delete(url);
+      success(resp);
+    } catch (e) {
+      _baseService.handleError(e, error);
+    }
+  }
 }

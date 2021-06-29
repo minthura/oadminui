@@ -10,7 +10,6 @@ class ConfirmPassword
   String password;
   @override
   ConfirmPasswordValidationError? validator(String value) {
-    print("p2: $password, c2: $value");
     if (value.isEmpty) {
       return ConfirmPasswordValidationError.empty;
     }

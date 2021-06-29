@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:oadminui/services/json_convertable.dart';
 
 class User extends JsonConvertable {
@@ -34,6 +35,34 @@ class User extends JsonConvertable {
     } else {
       this.gender = 'Female';
     }
+  }
+
+  Gender get userGender {
+    if (this.gender == 'Male') {
+      return Gender.male;
+    }
+    return Gender.female;
+  }
+
+  User copy() {
+    return User(
+      createdAt: createdAt,
+      name: name,
+      email: email,
+      gender: gender,
+      password: password,
+      address: address,
+      dob: dob,
+      canRead: canRead,
+      canWrite: canWrite,
+      canUpdate: canUpdate,
+      canDelete: canDelete,
+      id: id,
+    );
+  }
+
+  get dobStr {
+    return DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(dob));
   }
 
   static User fromJson(dynamic json) {
