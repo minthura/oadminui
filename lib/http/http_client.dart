@@ -16,6 +16,7 @@ class HttpClient {
     _httpClient = HttpClient();
     _dio
       ..options.baseUrl = baseUrl
+      ..options.sendTimeout = 5000
       ..options.connectTimeout = 5000
       ..options.receiveTimeout = 3000
       ..options.headers = {'Content-Type': 'application/json; charset=utf-8'}
