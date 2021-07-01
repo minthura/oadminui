@@ -11,7 +11,6 @@ import 'package:oadminui/views/screens/user/formz/dob.dart';
 import 'package:oadminui/views/screens/user/formz/email.dart';
 import 'package:oadminui/views/screens/user/formz/name.dart';
 import 'package:oadminui/views/screens/user/formz/password.dart';
-import 'package:oadminui/views/screens/user/index_screen.dart';
 
 class UserUpdateFormValidationController extends BaseGetxController {
   Rx<Name> name = Name.pure().obs;
