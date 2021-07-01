@@ -120,7 +120,7 @@ class UserCreateFormValidationController extends BaseGetxController {
       );
       UserProvider.instance.createUser(user, (response) {
         EasyLoading.dismiss();
-        Get.offAndToNamed(kRouteUsers);
+        // Get.offAndToNamed(kRouteUsers);
       }, (error) {
         handleCommonError(error);
         EasyLoading.dismiss();

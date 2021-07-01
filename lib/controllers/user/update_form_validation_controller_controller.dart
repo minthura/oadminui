@@ -141,7 +141,7 @@ class UserUpdateFormValidationController extends BaseGetxController {
       );
       UserProvider.instance.updateUser(user, (response) {
         EasyLoading.dismiss();
-        Get.offAndToNamed(kRouteUsers);
+        // Get.offAndToNamed(kRouteUsers);
       }, (error) {
         handleCommonError(error);
         EasyLoading.dismiss();

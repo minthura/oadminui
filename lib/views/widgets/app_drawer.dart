@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oadminui/controllers/session_controller.dart';
 import 'package:oadminui/routes.dart';
 import 'package:oadminui/views/screens/home_screen.dart';
 
@@ -20,6 +21,7 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> with RouteAware {
   static String _selectedRoute = '/';
   AppRouteObserver? _routeObserver;
+  SessionController _sessionController = Get.find();
   @override
   void initState() {
     super.initState();
@@ -50,6 +52,7 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+    final session = _sessionController.session.value;
     return SizedBox(
       width: 300,
       child: Drawer(
@@ -59,8 +62,8 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  const UserAccountsDrawerHeader(
-                    accountName: Text('User'),
+                  UserAccountsDrawerHeader(
+                    accountName: Text(session.name),
                     accountEmail: Text('user@email.com'),
                     currentAccountPicture: CircleAvatar(
                       child: Icon(Icons.android),
@@ -74,21 +77,15 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                     },
                     selected: _selectedRoute == HomeScreen.route,
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.photo_library),
-                    title: const Text('Users'),
-                    onTap: () async {
-                      await _navigateTo(context, kRouteUsers);
-                    },
-                    selected: _selectedRoute == kRouteUsers,
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.photo_library),
-                    title: const Text('Posts'),
-                    onTap: () async {
-                      await _navigateTo(context, kRoutePosts);
-                    },
-                    selected: _selectedRoute == kRoutePosts,
+                  ...session.features.map(
+                    (f) => ListTile(
+                      leading: const Icon(Icons.photo_library),
+                      title: Text(f.title),
+                      onTap: () async {
+                        await _navigateTo(context, f.route);
+                      },
+                      selected: _selectedRoute == f.route,
+                    ),
                   ),
                 ],
               ),

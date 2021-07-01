@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oadminui/controllers/session_controller.dart';
 import 'package:oadminui/views/screens/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -7,6 +8,7 @@ class LoginScreen extends StatelessWidget {
   static const route = '/login';
   @override
   Widget build(BuildContext context) {
+    SessionController _sessionController = Get.find();
     return Scaffold(
       body: Center(
         child: Column(
@@ -17,7 +19,8 @@ class LoginScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Get.offAndToNamed(HomeScreen.route);
+                _sessionController
+                    .login(() => Get.offAndToNamed(HomeScreen.route));
               },
               child: Text('LOGIN'),
             ),
