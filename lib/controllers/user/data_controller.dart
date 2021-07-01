@@ -4,7 +4,6 @@ import 'package:oadminui/http/http_error.dart';
 import 'package:oadminui/models/post.dart';
 import 'package:oadminui/models/user.dart';
 import 'package:oadminui/providers/crud_provider.dart';
-import 'package:oadminui/providers/user_provider.dart';
 import 'package:oadminui/services/json_convertable.dart';
 
 class DataController<T> extends OADGetxControllerInterface {
@@ -17,16 +16,13 @@ class DataController<T> extends OADGetxControllerInterface {
   }
 
   @override
-  void delete(String id) {
+  void delete(String entityName, String id) {
     EasyLoading.show(status: 'Deleting');
-    UserProvider.instance.deleteUser(id, () {
-      entities.removeWhere((user) => user.id == id);
+    CrudProvider.instance.deleteUser(entityName, id, () {
+      entities.removeWhere((entity) => entity.id == id);
       totalEntities.value = totalEntities.value - 1;
       EasyLoading.dismiss();
-    }, (error) {
-      handleCommonError(error);
-      EasyLoading.dismiss();
-    });
+    }, onError);
   }
 
   @override

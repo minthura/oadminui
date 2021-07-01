@@ -41,8 +41,9 @@ class CrudProvider {
     });
   }
 
-  deleteUser(String id, Function() onSuccess, Function(HttpError) onError) {
-    HttpClient.instance.delete('users/$id', (response) {
+  deleteUser(String entityName, String id, Function() onSuccess,
+      Function(HttpError) onError) {
+    HttpClient.instance.delete('$entityName/$id', (response) {
       onSuccess();
     }, (e) {
       onError(e);

@@ -82,7 +82,8 @@ class DataTableScreen<T> extends StatelessWidget {
                         onPressed: () {
                           final idToDelete = controller.entities[i].id;
                           if (idToDelete != null) {
-                            controller.delete(idToDelete);
+                            controller.delete(
+                                controller.entityName, idToDelete);
                           }
                           Navigator.of(context).pop();
                         },
