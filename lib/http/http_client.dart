@@ -63,6 +63,7 @@ class HttpClient {
       final Response resp = await _dio.get(url);
       success(resp);
     } catch (e) {
+      print('In error');
       _baseService.handleError(e, error);
     }
   }

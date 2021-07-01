@@ -79,9 +79,17 @@ class _AppDrawerState extends State<AppDrawer> with RouteAware {
                     leading: const Icon(Icons.photo_library),
                     title: const Text('Users'),
                     onTap: () async {
-                      await _navigateTo(context, UsersScreen.route);
+                      await _navigateTo(context, kRouteUsers);
                     },
-                    selected: _selectedRoute == UsersScreen.route,
+                    selected: _selectedRoute == kRouteUsers,
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Posts'),
+                    onTap: () async {
+                      await _navigateTo(context, kRoutePosts);
+                    },
+                    selected: _selectedRoute == kRoutePosts,
                   ),
                 ],
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oadminui/controllers/user/update_controller.dart';
+import 'package:oadminui/controllers/user/update_form_validation_controller_controller.dart';
 import 'package:oadminui/models/user.dart';
 import 'package:oadminui/views/widgets/app_scaffold.dart';
 import 'package:oadminui/views/widgets/my_datepicker.dart';
@@ -40,8 +40,8 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       pageTitle: 'Update User',
-      body: GetX<UserUpdateController>(
-        init: UserUpdateController(user.obs),
+      body: GetX<UserUpdateFormValidationController>(
+        init: UserUpdateFormValidationController(user.obs),
         global: false,
         builder: (controller) => SingleChildScrollView(
           child: Container(

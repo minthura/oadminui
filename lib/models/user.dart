@@ -1,7 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:oadminui/services/json_convertable.dart';
 
-class User extends JsonConvertable {
+class User extends OADEntity {
+  static const entity = 'users';
   DateTime createdAt;
   String name;
   String email;
@@ -13,7 +14,7 @@ class User extends JsonConvertable {
   bool canWrite;
   bool canUpdate;
   bool canDelete;
-  String? id;
+  String? userId;
   User({
     required this.createdAt,
     required this.name,
@@ -26,8 +27,8 @@ class User extends JsonConvertable {
     required this.canWrite,
     required this.canUpdate,
     required this.canDelete,
-    this.id,
-  });
+    this.userId,
+  }) : super(userId);
 
   set userGender(Gender gender) {
     if (gender == Gender.male) {
@@ -57,7 +58,7 @@ class User extends JsonConvertable {
       canWrite: canWrite,
       canUpdate: canUpdate,
       canDelete: canDelete,
-      id: id,
+      userId: id,
     );
   }
 
@@ -78,7 +79,7 @@ class User extends JsonConvertable {
       canWrite: json["canWrite"],
       canUpdate: json["canUpdate"],
       canDelete: json["canDelete"],
-      id: json["id"],
+      userId: json["id"],
     );
   }
 
@@ -99,6 +100,18 @@ class User extends JsonConvertable {
       "id": id,
     };
   }
+
+  static List<String> get headers => [
+        'Name',
+        'Email',
+        'Gender',
+      ];
+
+  static List<String> get props => [
+        'name',
+        'email',
+        'gender',
+      ];
 }
 
 enum Gender { male, female }

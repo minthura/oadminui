@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:oadminui/controllers/base_controller.dart';
 import 'package:oadminui/models/user.dart';
 import 'package:oadminui/providers/user_provider.dart';
+import 'package:oadminui/routes.dart';
 import 'package:oadminui/views/screens/user/formz/address.dart';
 import 'package:oadminui/views/screens/user/formz/confirm_password.dart';
 import 'package:oadminui/views/screens/user/formz/dob.dart';
@@ -12,38 +13,19 @@ import 'package:oadminui/views/screens/user/formz/name.dart';
 import 'package:oadminui/views/screens/user/formz/password.dart';
 import 'package:oadminui/views/screens/user/index_screen.dart';
 
-class UserUpdateController extends BaseGetxController {
-  Rx<Name> name = Name.pure().obs;
-  Rx<Email> email = Email.pure().obs;
-  Rx<Password> password = Password.pure().obs;
-  Rx<Address> address = Address.pure().obs;
-  Rx<ConfirmPassword> confirmPassword = ConfirmPassword.pure('').obs;
-  Rx<DateOfBirth> dob = DateOfBirth.pure().obs;
-  Rx<Gender> gender = Gender.male.obs;
+class UserCreateFormValidationController extends BaseGetxController {
+  final Rx<Name> name = Name.pure().obs;
+  final Rx<Email> email = Email.pure().obs;
+  final Rx<Password> password = Password.pure().obs;
+  final Rx<Address> address = Address.pure().obs;
+  final Rx<ConfirmPassword> confirmPassword = ConfirmPassword.pure('').obs;
+  final Rx<DateOfBirth> dob = DateOfBirth.pure().obs;
+  final Rx<Gender> gender = Gender.male.obs;
   final isFormValid = false.obs;
-  var canRead = false.obs;
-  var canWrite = false.obs;
-  var canUpdate = false.obs;
-  var canDelete = false.obs;
-  final Rx<User> user;
-
-  UserUpdateController(this.user) {
-    name = Name.dirty(user.value.name).obs;
-    email = Email.dirty(user.value.email).obs;
-    password = Password.dirty(user.value.password).obs;
-    address = Address.dirty(user.value.address).obs;
-    confirmPassword =
-        ConfirmPassword.dirty(user.value.password, user.value.password).obs;
-    dob = DateOfBirth.dirty(
-            DateTime.fromMillisecondsSinceEpoch(user.value.dob).toString())
-        .obs;
-    gender = user.value.userGender.obs;
-    canRead = user.value.canRead.obs;
-    canWrite = user.value.canWrite.obs;
-    canUpdate = user.value.canUpdate.obs;
-    canDelete = user.value.canDelete.obs;
-    validate();
-  }
+  final canRead = false.obs;
+  final canWrite = false.obs;
+  final canUpdate = false.obs;
+  final canDelete = false.obs;
 
   void onNameChanged(String value) {
     name(Name.dirty(value));
@@ -112,7 +94,6 @@ class UserUpdateController extends BaseGetxController {
       dob.value
     ];
     var status = Formz.validate(inputs);
-    print(status);
     if (status == FormzStatus.pure || status == FormzStatus.invalid) {
       isFormValid(false);
       return false;
@@ -122,11 +103,10 @@ class UserUpdateController extends BaseGetxController {
     }
   }
 
-  void updateUser() {
+  void createUser() {
     if (validate()) {
-      EasyLoading.show(status: 'Updating');
+      EasyLoading.show(status: 'Creating');
       final user = User(
-        id: this.user.value.id,
         createdAt: DateTime.now(),
         name: name.value.value,
         email: email.value.value,
@@ -139,9 +119,9 @@ class UserUpdateController extends BaseGetxController {
         canUpdate: canUpdate.value,
         canDelete: canDelete.value,
       );
-      UserProvider.instance.updateUser(user, (response) {
+      UserProvider.instance.createUser(user, (response) {
         EasyLoading.dismiss();
-        Get.offAndToNamed(UsersScreen.route);
+        Get.offAndToNamed(kRouteUsers);
       }, (error) {
         handleCommonError(error);
         EasyLoading.dismiss();

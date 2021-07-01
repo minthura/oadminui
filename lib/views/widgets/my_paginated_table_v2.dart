@@ -23,7 +23,7 @@ class MyPaginatedDataTableV2 extends StatefulWidget {
   final int totalRows;
   final bool hasActions;
   final List<String> props;
-  final List<JsonConvertable> rows;
+  final List<OADEntity> rows;
   final Function(int)? onActionDetail;
   final Function(int)? onActionEdit;
   final Function(int)? onActionDelete;

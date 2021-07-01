@@ -1,20 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oadminui/controllers/user/index_controller.dart';
+import 'package:oadminui/controllers/oad_getx_controller_interface.dart';
 import 'package:oadminui/views/screens/user/create_screen.dart';
 import 'package:oadminui/views/screens/user/update_screen.dart';
 import 'package:oadminui/views/widgets/app_scaffold.dart';
 import 'package:oadminui/views/widgets/my_paginated_table_v2.dart';
 
-class UsersScreen extends StatelessWidget {
-  static const route = '/users';
-  const UsersScreen({Key? key}) : super(key: key);
-  final limit = 10;
+class DataTableScreen<T> extends StatelessWidget {
+  const DataTableScreen({
+    Key? key,
+    required this.instance,
+    required this.title,
+    required this.headers,
+    required this.props,
+  }) : super(key: key);
+  final OADGetxControllerInterface instance;
+  final String title;
+  final List<String> headers;
+  final List<String> props;
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      pageTitle: 'Users',
+      pageTitle: title,
       actions: [
         IconButton(
             onPressed: () {
@@ -22,32 +31,25 @@ class UsersScreen extends StatelessWidget {
             },
             icon: Icon(CupertinoIcons.add))
       ],
-      body: GetX<UserIndexController>(
-        init: UserIndexController(limit: limit),
+      body: GetX<OADGetxControllerInterface>(
+        init: instance,
         global: false,
-        builder: (userController) => Stack(
+        builder: (controller) => Stack(
           alignment: Alignment.center,
           children: [
             MyPaginatedDataTableV2(
-              headers: [
-                'Name',
-                'Email',
-                'Gender',
-              ],
-              rowsPerPage: limit,
-              totalRows: userController.totalUsers.value,
-              onPageChange: (p) => userController.getUsers(p, limit),
-              rows: userController.users,
-              props: [
-                'name',
-                'email',
-                'gender',
-              ],
+              headers: headers,
+              rowsPerPage: controller.limit,
+              totalRows: controller.totalEntities.value,
+              onPageChange: (p) => controller.getData<T>(
+                  instance.entityName, p, controller.limit),
+              rows: controller.entities,
+              props: props,
               hasActions: true,
-              onActionDetail: (i) => print(userController.users[i].name),
+              onActionDetail: (i) => print(controller.entities[i]),
               onActionEdit: (i) {
                 Get.toNamed(UpdateUserScreen.route,
-                    arguments: userController.users[i]);
+                    arguments: controller.entities[i]);
               },
               onActionDelete: (i) async {
                 await showDialog(
@@ -59,8 +61,10 @@ class UsersScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text('Are you sure you want to delete?'),
-                        Text('Name: ' + userController.users[i].name),
-                        Text('Email: ' + userController.users[i].email),
+                        Text('Name: ' +
+                            controller.entities[i].toJson()[props[0]]),
+                        Text('Email: ' +
+                            controller.entities[i].toJson()[props[1]]),
                       ],
                     ),
                     actions: [
@@ -76,9 +80,9 @@ class UsersScreen extends StatelessWidget {
                               MaterialStateProperty.all(Colors.red),
                         ),
                         onPressed: () {
-                          final idToDelete = userController.users[i].id;
+                          final idToDelete = controller.entities[i].id;
                           if (idToDelete != null) {
-                            userController.deleteUser(idToDelete);
+                            controller.delete(idToDelete);
                           }
                           Navigator.of(context).pop();
                         },
@@ -88,7 +92,7 @@ class UsersScreen extends StatelessWidget {
                   ),
                 );
               },
-              isBusy: userController.isBusy,
+              isBusy: controller.isBusy.value,
             ),
           ],
         ),
