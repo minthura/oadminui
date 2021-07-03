@@ -4,6 +4,7 @@ final kPrimaryColor = Colors.green;
 final kPrimaryDarkColor = Color(0xff388E3C);
 final kAccentColor = Color(0xff009688);
 final kErrorColor = Colors.red;
+final kSuccessColor = Colors.green;
 final kTextColor = Color(0xff212121);
 final kButtonColor = Color(0xffff5722);
 final kCardBackgroundColor = Colors.white;

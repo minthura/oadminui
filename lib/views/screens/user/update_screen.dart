@@ -104,9 +104,8 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
                 SizedBox(
                   height: 16,
                 ),
-                MyDatePicker(
+                OADDatePicker(
                   labelText: 'Date of birth',
-                  text: dobTextEditingController.text,
                   onDateSelected: (date) => controller.onDobChanged(date),
                   errorText: controller.onDobError(),
                 ),
@@ -115,7 +114,7 @@ class _UpdateUserScreenState extends State<UpdateUserScreen> {
                 ),
                 OADBoxContainer(
                   label: 'Gender',
-                  child: RadioGroup(
+                  child: OADRadioGroup(
                     values: ['Male', 'Female'],
                     selectedValue: controller.user.value.gender,
                     onChanged: (index, value) =>

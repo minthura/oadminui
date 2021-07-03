@@ -35,3 +35,20 @@ class _OADCheckboxState extends State<OADCheckbox> {
     );
   }
 }
+
+class OADCheckboxFormField extends FormField<bool> {
+  OADCheckboxFormField({
+    required String title,
+    FormFieldSetter<bool>? onSaved,
+    FormFieldValidator<bool>? validator,
+  }) : super(
+          onSaved: onSaved,
+          validator: validator,
+          builder: (state) => OADCheckbox(
+            label: title,
+            onChanged: state.didChange,
+            isChecked: state.value,
+          ),
+          initialValue: false,
+        );
+}

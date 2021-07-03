@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 
-class RadioGroup extends StatefulWidget {
-  const RadioGroup({
+class OADRadioGroup extends StatefulWidget {
+  const OADRadioGroup({
     Key? key,
     required this.values,
-    this.selectedIndex = 0,
     this.onChanged,
     this.selectedValue = '',
   }) : super(key: key);
   final List<String> values;
-  final int selectedIndex;
   final String selectedValue;
   final Function(int index, String value)? onChanged;
 
   @override
-  _RadioGroupState createState() => _RadioGroupState();
+  _OADRadioGroupState createState() => _OADRadioGroupState();
 }
 
-class _RadioGroupState extends State<RadioGroup> {
+class _OADRadioGroupState extends State<OADRadioGroup> {
   String? _groupValue;
   @override
   void initState() {
-    _groupValue = widget.values[widget.selectedIndex];
     if (widget.selectedValue.isNotEmpty) {
       final index = widget.values.indexOf(widget.selectedValue);
       if (index >= 0) {
@@ -55,4 +52,20 @@ class _RadioGroupState extends State<RadioGroup> {
           .toList(),
     );
   }
+}
+
+class OADRadioGroupFormField extends FormField<String> {
+  OADRadioGroupFormField({
+    FormFieldSetter<String>? onSaved,
+    required List<String> values,
+    final String? initialValue,
+  }) : super(
+          onSaved: onSaved,
+          builder: (state) => OADRadioGroup(
+            values: values,
+            onChanged: (index, value) => state.didChange(value),
+            selectedValue: state.value ?? '',
+          ),
+          initialValue: initialValue ?? (values.length > 0 ? values[0] : null),
+        );
 }

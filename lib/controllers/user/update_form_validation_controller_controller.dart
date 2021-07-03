@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:oadminui/controllers/base_controller.dart';
 import 'package:oadminui/models/user.dart';
 import 'package:oadminui/providers/user_provider.dart';
-import 'package:oadminui/routes.dart';
 import 'package:oadminui/views/screens/user/formz/address.dart';
 import 'package:oadminui/views/screens/user/formz/confirm_password.dart';
 import 'package:oadminui/views/screens/user/formz/dob.dart';
@@ -39,7 +38,7 @@ class UserUpdateFormValidationController extends BaseGetxController {
         .obs;
     gender = user.value.userGender.obs;
     canRead = user.value.canRead.obs;
-    canWrite = user.value.canWrite.obs;
+    canWrite = user.value.canCreate.obs;
     canUpdate = user.value.canUpdate.obs;
     canDelete = user.value.canDelete.obs;
     validate();
@@ -135,7 +134,7 @@ class UserUpdateFormValidationController extends BaseGetxController {
         address: address.value.value,
         dob: dob.value.value.millisecondsSinceEpoch,
         canRead: canRead.value,
-        canWrite: canWrite.value,
+        canCreate: canWrite.value,
         canUpdate: canUpdate.value,
         canDelete: canDelete.value,
       );

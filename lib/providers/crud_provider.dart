@@ -41,9 +41,18 @@ class CrudProvider {
     });
   }
 
-  deleteUser(String entityName, String id, Function() onSuccess,
+  delete(String entityName, String id, Function() onSuccess,
       Function(HttpError) onError) {
     HttpClient.instance.delete('$entityName/$id', (response) {
+      onSuccess();
+    }, (e) {
+      onError(e);
+    });
+  }
+
+  create(String entityName, dynamic json, Function() onSuccess,
+      Function(HttpError) onError) {
+    HttpClient.instance.post('$entityName', json, (response) {
       onSuccess();
     }, (e) {
       onError(e);

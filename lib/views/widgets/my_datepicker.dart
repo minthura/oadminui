@@ -2,27 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class MyDatePicker extends StatefulWidget {
-  const MyDatePicker(
-      {Key? key,
-      this.labelText,
-      this.errorText,
-      this.onDateSelected,
-      this.text})
-      : super(key: key);
+class OADDatePicker extends StatefulWidget {
+  const OADDatePicker({
+    Key? key,
+    this.labelText,
+    this.errorText,
+    this.onDateSelected,
+    this.initialDate,
+  }) : super(key: key);
   final String? labelText;
   final String? errorText;
   final Function(DateTime)? onDateSelected;
-  final String? text;
+  final DateTime? initialDate;
   @override
-  _MyDatePickerState createState() => _MyDatePickerState();
+  _OADDatePickerState createState() => _OADDatePickerState();
 }
 
-class _MyDatePickerState extends State<MyDatePicker> {
+class _OADDatePickerState extends State<OADDatePicker> {
   TextEditingController _textEditingController = TextEditingController();
   @override
   void initState() {
-    _textEditingController.text = widget.text ?? '';
+    _textEditingController.text =
+        DateFormat.yMMMd().format(widget.initialDate ?? DateTime.now());
     super.initState();
   }
 
@@ -44,7 +45,7 @@ class _MyDatePickerState extends State<MyDatePicker> {
       BuildContext context, TextEditingController textEditingController) async {
     final selectedDate = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: widget.initialDate ?? DateTime.now(),
         firstDate: DateTime.fromMillisecondsSinceEpoch(0),
         lastDate: DateTime(2050));
     if (selectedDate != null) {
@@ -57,4 +58,22 @@ class _MyDatePickerState extends State<MyDatePicker> {
 class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
+}
+
+class OADDatePickerFormField extends FormField<DateTime> {
+  OADDatePickerFormField({
+    final DateTime? initialDate,
+    String? labelText,
+    FormFieldSetter<DateTime>? onSaved,
+    FormFieldValidator<DateTime>? validator,
+  }) : super(
+          initialValue: initialDate ?? DateTime.now(),
+          onSaved: onSaved,
+          validator: validator,
+          builder: (state) => OADDatePicker(
+            labelText: labelText,
+            initialDate: state.value,
+            onDateSelected: state.didChange,
+          ),
+        );
 }

@@ -7,14 +7,14 @@ class BaseGetxController extends GetxController {
     print(e.error);
     switch (e.error) {
       case ErrorType.CONNECTION_TIMEOUT:
-        OADUtils.showSnackbar(
+        OADUtils.showErrorSnackbar(
             'Error', 'Please check your internet connection and try again.');
         break;
       case ErrorType.UNKNOWN:
-        OADUtils.showSnackbar('Error', 'Cannot connect to the server.');
+        OADUtils.showErrorSnackbar('Error', 'Cannot connect to the server.');
         break;
       default:
-        OADUtils.showSnackbar('Error', 'An error has occurred.');
+        OADUtils.showErrorSnackbar('Error', 'An error has occurred.');
     }
   }
 }

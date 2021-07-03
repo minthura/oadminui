@@ -12,11 +12,13 @@ class DataTableScreen<T> extends StatelessWidget {
     Key? key,
     required this.instance,
     required this.title,
+    required this.route,
     required this.headers,
     required this.props,
   }) : super(key: key);
   final OADGetxControllerInterface instance;
   final String title;
+  final String route;
   final List<String> headers;
   final List<String> props;
 
@@ -27,7 +29,13 @@ class DataTableScreen<T> extends StatelessWidget {
       actions: [
         IconButton(
             onPressed: () {
-              Get.toNamed(NewUserScreen.route);
+              instance.getFields(
+                (fields) => Get.toNamed(CreateNewScreen.route, arguments: {
+                  'fields': fields,
+                  'entity': instance.entityName,
+                  'indexroute': route,
+                }),
+              );
             },
             icon: Icon(CupertinoIcons.add))
       ],
@@ -82,8 +90,7 @@ class DataTableScreen<T> extends StatelessWidget {
                         onPressed: () {
                           final idToDelete = controller.entities[i].id;
                           if (idToDelete != null) {
-                            controller.delete(
-                                controller.entityName, idToDelete);
+                            instance.delete(controller.entityName, idToDelete);
                           }
                           Navigator.of(context).pop();
                         },

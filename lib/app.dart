@@ -7,6 +7,7 @@ import 'package:oadminui/models/post.dart';
 import 'package:oadminui/models/user.dart';
 import 'package:oadminui/views/screens/home_screen.dart';
 import 'package:oadminui/views/screens/login_screen.dart';
+import 'package:oadminui/views/screens/user/create_screen.dart';
 import 'package:oadminui/views/screens/user/index_screen.dart';
 import 'package:oadminui/views/widgets/app_scaffold.dart';
 import 'app_route_observer.dart';
@@ -42,6 +43,7 @@ class OAdminApp extends StatelessWidget {
     final routes = {
       HomeScreen.route: (_) => HomeScreen(),
       LoginScreen.route: (_) => LoginScreen(),
+      CreateNewScreen.route: (_) => CreateNewScreen(),
     };
     navMenuRoutes.add(HomeScreen.route);
     controller.session.value.features.forEach((f) {
@@ -52,6 +54,7 @@ class OAdminApp extends StatelessWidget {
                 instance: DataController<User>(User.entity),
                 headers: User.headers,
                 props: User.props,
+                route: f.route,
                 title: 'Users',
               );
           break;
@@ -60,6 +63,7 @@ class OAdminApp extends StatelessWidget {
                 instance: DataController<Post>(Post.entity),
                 headers: Post.headers,
                 props: Post.props,
+                route: f.route,
                 title: 'Posts',
               );
           break;

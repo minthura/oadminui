@@ -11,7 +11,7 @@ class User extends OADEntity {
   String address;
   int dob;
   bool canRead;
-  bool canWrite;
+  bool canCreate;
   bool canUpdate;
   bool canDelete;
   String? userId;
@@ -24,7 +24,7 @@ class User extends OADEntity {
     required this.address,
     required this.dob,
     required this.canRead,
-    required this.canWrite,
+    required this.canCreate,
     required this.canUpdate,
     required this.canDelete,
     this.userId,
@@ -55,7 +55,7 @@ class User extends OADEntity {
       address: address,
       dob: dob,
       canRead: canRead,
-      canWrite: canWrite,
+      canCreate: canCreate,
       canUpdate: canUpdate,
       canDelete: canDelete,
       userId: id,
@@ -76,7 +76,7 @@ class User extends OADEntity {
       address: json["address"],
       dob: json["dob"],
       canRead: json["canRead"],
-      canWrite: json["canWrite"],
+      canCreate: json["canCreate"],
       canUpdate: json["canUpdate"],
       canDelete: json["canDelete"],
       userId: json["id"],
@@ -94,7 +94,7 @@ class User extends OADEntity {
       "address": address,
       "dob": dob,
       "canRead": canRead,
-      "canWrite": canWrite,
+      "canCreate": canCreate,
       "canUpdate": canUpdate,
       "canDelete": canDelete,
       "id": id,
