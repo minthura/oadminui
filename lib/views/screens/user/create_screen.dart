@@ -24,8 +24,7 @@ class _CreateNewScreenState extends State<CreateNewScreen> {
     final List<OADFormField> fields = Get.arguments['fields'];
     final entity = Get.arguments['entity'];
     final indexRoute = Get.arguments['indexroute'];
-    final controller =
-        Get.put(CreateFormController(entity: entity), permanent: false);
+    final controller = CreateFormController(entity: entity);
     return AppScaffold(
       pageTitle: 'New User',
       body: SingleChildScrollView(
@@ -46,7 +45,10 @@ class _CreateNewScreenState extends State<CreateNewScreen> {
                   child: Row(
                     children: [
                       OADButton(
-                        onPressed: () => Get.back(),
+                        onPressed: () {
+                          print(controller.entity);
+                          Get.back();
+                        },
                         title: 'Cancel',
                         isNegative: true,
                       ),

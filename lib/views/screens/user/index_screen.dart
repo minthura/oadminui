@@ -76,14 +76,22 @@ class DataTableScreen<T> extends StatelessWidget {
                       ],
                     ),
                     actions: [
-                      ElevatedButton(
+                      ElevatedButton.icon(
+                        icon: Icon(CupertinoIcons.xmark),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text('Cancel'),
-                      ),
-                      ElevatedButton(
                         style: ButtonStyle(
+                          padding:
+                              MaterialStateProperty.all(EdgeInsets.all(16)),
+                        ),
+                        label: Text('Cancel'),
+                      ),
+                      ElevatedButton.icon(
+                        icon: Icon(CupertinoIcons.delete),
+                        style: ButtonStyle(
+                          padding:
+                              MaterialStateProperty.all(EdgeInsets.all(16)),
                           backgroundColor:
                               MaterialStateProperty.all(Colors.red),
                         ),
@@ -94,7 +102,7 @@ class DataTableScreen<T> extends StatelessWidget {
                           }
                           Navigator.of(context).pop();
                         },
-                        child: Text('Delete'),
+                        label: Text('Delete'),
                       ),
                     ],
                   ),
